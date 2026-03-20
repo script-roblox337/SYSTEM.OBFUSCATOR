@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Obfuscator V6.1 - Fixed & Stable</title>
+    <style>
+        :root { --neon: #00ff41; --bg: #050505; --panel: #111; --text: #00ff41; --blue: #008cff; }
+        
+        body { 
+            font-family: 'Consolas', 'Fira Code', 'Courier New', monospace; 
+            background: var(--bg); 
+            color: var(--text); 
+            padding: 15px; 
+            max-width: 1000px; 
+            margin: auto; 
+            line-height: 1.4;
+        }
+
+        h2 { 
+            text-align: center; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            text-shadow: 0 0 10px var(--neon); 
+            border: 1px solid var(--neon); 
+            padding: 10px;
+            font-size: clamp(14px, 4vw, 1.2rem);
+            white-space: nowrap; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: 0;
+        }
+        
+        .container { 
+            background: var(--panel); 
+            border: 1px solid #333; 
+            padding: 15px; 
+            border-radius: 4px; 
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); 
+        }
+
+        textarea { 
+            width: 100%; 
+            height: 180px; 
+            background: #000; 
+            color: var(--neon); 
+            border: 1px solid var(--neon); 
+            padding: 12px; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            margin-bottom: 15px; 
+            outline: none;
+            resize: vertical;
+        }
+
+        .controls { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 12px; 
+            margin-bottom: 15px; 
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 8px;
+        }
+
+        select, button { 
+            width: 100%; 
+            padding: 10px; 
+            background: #000; 
+            color: var(--neon); 
+            border: 1px solid var(--neon); 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-transform: uppercase; 
+            font-size: 12px;
+            transition: 0.2s;
+        }
+
+        button:active { transform: scale(0.95); }
+        button:hover { background: var(--neon); color: #000; box-shadow: 0 0 15px var(--neon); }
+
+        .btn-copy { border-color: var(--blue); color: var(--blue); }
+        .btn-copy:hover { background: var(--blue); color: #fff; box-shadow: 0 0 15px var(--blue); }
+        
+        .btn-file { border-color: #d400ff; color: #d400ff; }
+        .btn-file:hover { background: #d400ff; color: #000; box-shadow: 0 0 15px #d400ff; }
+
+        pre { 
+            background: #000; 
+            border: 1px dashed #444; 
+            padding: 15px; 
+            overflow: auto; 
+            white-space: pre-wrap; 
+            word-break: break-all; 
+            color: var(--neon); 
+            min-height: 80px; 
+            max-height: 400px; 
+            font-size: 13px;
+        }
+
+        label { font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .status { font-size: 10px; color: #555; text-align: right; margin-top: -5px; margin-bottom: 10px; letter-spacing: 1px; }
+        
+        #fileInput { display: none; }
+    </style>
+</head>
+<body>
+
+    <h2>SYSTEM.OBFUSCATOR.V6.1</h2>
+    <div class="status">STATUS: BINARY_FIXED_STABLE // POWER: MAX</div>
+
+    <div class="container">
+        <label>INPUT BUFFER:</label>
+        <textarea id="input" placeholder="[Dán mã nguồn hoặc tải file lên...]"></textarea>
+
+        <div class="controls">
+            <div>
+                <label>MODULE XỬ LÝ:</label>
+                <select id="mode">
+                    <optgroup label="LUA KRNL SERIES">
+                        <option value="lua_obf_strong">Lua Obfuscate Mạnh (KRNL-ready)</option>
+                        <option value="lua_encode">Mã hóa Lua (KRNL-style)</option>
+                        <option value="lua_decode">Giải mã Lua (KRNL-style)</option>
+                        <option value="lua_adv_decode">Giải mã Lua Nâng cao</option>
+                    </optgroup>
+                    <optgroup label="ULTRA SECURITY">
+                        <option value="hard_encode">Mã hóa kiểu Đặc biệt khó</option>
+                        <option value="hard_decode">Giải mã kiểu Đặc biệt khó</option>
+                    </optgroup>
+                    <optgroup label="LANGUAGES">
+                        <option value="py_encode">Mã hóa Python</option>
+                        <option value="py_decode">Giải mã Python</option>
+                        <option value="js_encode">Mã hóa JS</option>
+                        <option value="js_decode">Giải mã JS</option>
+                        <option value="css_encode">Mã hóa CSS</option>
+                        <option value="css_decode">Giải mã CSS (Beautify)</option>
+                    </optgroup>
+                    <optgroup label="SIGNAL & DATA">
+                        <option value="bin_encode">Mã hóa Nhị phân (Binary)</option>
+                        <option value="bin_decode">Giải mã Nhị phân (Binary)</option>
+                        <option value="b64_encode">Mã hóa Base64</option>
+                        <option value="b64_decode">Giải mã Base64</option>
+                        <option value="morse_encode">Mã hóa Morse</option>
+                        <option value="morse_decode">Giải mã Morse</option>
+                    </optgroup>
+                </select>
+            </div>
+            
+            <div class="btn-group">
+                <input type="file" id="fileInput" onchange="handleUpload(this)">
+                <button class="btn-file" onclick="document.getElementById('fileInput').click()">UPLOAD</button>
+                <button onclick="execute()">THỰC THI</button>
+                <button id="copyBtn" class="btn-copy" onclick="copyOutput()">COPY</button>
+                <button class="btn-file" onclick="downloadOutput()">DOWNLOAD</button>
+            </div>
+        </div>
+
+        <label>OUTPUT CONSOLE:</label>
+        <pre id="output">_SYSTEM_IDLE</pre>
+    </div>
+
+<script>
+const MORSE = {'A':'.-','B':'-...','C':'-.-.','D':'-..','E':'.','F':'..-.','G':'--.','H':'....','I':'..','J':'.---','K':'-.-','L':'.-..','M':'--','N':'-.','O':'---','P':'.--.','Q':'--.-','R':'.-.','S':'...','T':'-','U':'..-','V':'...-','W':'.--','X':'-..-','Y':'-.--','Z':'--..','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.','0':'-----',' ':'/'};
+
+const uEncode = (s) => btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, (m, p) => String.fromCharCode('0x' + p)));
+const uDecode = (s) => { 
+    try { 
+        return decodeURIComponent(atob(s).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')); 
+    } catch(e) { return "ERROR: Invalid Format"; } 
+};
+
+function textToBin(text) {
+    return text.split('').map(char => char.charCodeAt(0).toString(2).padStart(8, '0')).join(' ');
+}
+
+function binToText(bin) {
+    try {
+        let cleanBin = bin.replace(/[^01\s]/g, '');
+        return cleanBin.split(/\s+/).map(b => b ? String.fromCharCode(parseInt(b, 2)) : '').join('');
+    } catch(e) { return "ERROR: Binary Decode Failed"; }
+}
+
+function handleUpload(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('input').value = e.target.result;
+    };
+    reader.readAsText(file);
+}
+
+function downloadOutput() {
+    const text = document.getElementById('output').innerText;
+    if(text === "_SYSTEM_IDLE" || text === "> NO_INPUT_DETECTED") return;
+    
+    const blob = new Blob([text], { type: 'text/plain' });
+    const anchor = document.createElement('a');
+    anchor.download = "obfuscated_output.txt";
+    anchor.href = window.URL.createObjectURL(blob);
+    anchor.target = "_blank";
+    anchor.style.display = "none";
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+}
+
+function execute() {
+    const mode = document.getElementById('mode').value;
+    const input = document.getElementById('input').value.trim();
+    const out = document.getElementById('output');
+    let res = "";
+
+    if(!input) { out.innerText = "> NO_INPUT_DETECTED"; return; }
+
+    try {
+        switch(mode) {
+            case 'bin_encode': res = textToBin(input); break;
+            case 'bin_decode': res = binToText(input); break;
+            case 'lua_encode':
+                res = `load(string.char(${Array.from(input).map(c => c.charCodeAt(0)).join(',')}))()`;
+                break;
+            case 'lua_obf_strong':
+                let hexLayer = Array.from(input).map(c => '\\' + c.charCodeAt(0)).join('');
+                res = `load("${hexLayer}")()`;
+                break;
+            case 'lua_decode':
+            case 'lua_adv_decode':
+                let charMatch = input.match(/string\.char\s*\(([\d\s,]+)\)/);
+                if(charMatch) {
+                    res = charMatch[1].split(',').map(n => String.fromCharCode(n.trim())).join('');
+                } else {
+                    res = input.replace(/\\(\d{1,3})/g, (m, n) => String.fromCharCode(n));
+                    res = res.replace(/['"]\s*\.\s*['"]/g, '');
+                }
+                break;
+            case 'hard_encode':
+                let hx = Array.from(input).map(c => '\\x' + c.charCodeAt(0).toString(16).padStart(2, '0')).join('');
+                res = `eval(atob("${uEncode("eval('" + hx + "')").split('').reverse().join('')}").split('').reverse().join(''))`;
+                break;
+            case 'hard_decode':
+                let b64Match = input.match(/atob\("([^"]+)"\)/);
+                if(b64Match) {
+                    let b64 = b64Match[1].split('').reverse().join('');
+                    res = uDecode(b64).replace(/\\x([0-9a-fA-F]{2})/g, (m, h) => String.fromCharCode(parseInt(h, 16))).replace(/eval\(['"]|['"]\)/g, '');
+                } else { res = "> ERROR: Invalid Pattern"; }
+                break;
+            case 'py_encode': res = `import base64\nexec(base64.b64decode("${uEncode(input)}"))`; break;
+            case 'py_decode':
+                try {
+                    let cleaned = input.replace(/import\s+base64\s*\n?/i,'').replace(/exec\(/i,'').replace(/\)$/,'');
+                    let b64Match = cleaned.match(/["']([^"']+)["']/);
+                    if(b64Match){
+                        res = decodeURIComponent(escape(atob(b64Match[1])));
+                    } else {
+                        res = "> ERROR: Không tìm thấy dữ liệu Base64";
+                    }
+                } catch(e) {
+                    res = "> EXCEPTION: " + e.message;
+                }
+                break;
+            case 'js_encode': res = `eval(atob("${uEncode(input)}"))`; break;
+            case 'b64_encode': res = uEncode(input); break;
+            case 'b64_decode': res = uDecode(input); break;
+            case 'morse_encode':
+                res = input.toUpperCase().split('').map(c => MORSE[c] || '?').join(' ');
+                break;
+            case 'morse_decode':
+                const invM = Object.fromEntries(Object.entries(MORSE).map(([k,v]) => [v,k]));
+                res = input.split(' ').map(c => invM[c] || '?').join('');
+                break;
+            default: res = "Module missing...";
+        }
+    } catch (e) { res = "> EXCEPTION: " + e.message; }
+    
+    out.innerText = res;
+}
+
+function copyOutput() {
+    const text = document.getElementById('output').innerText;
+    if(text === "_SYSTEM_IDLE" || text === "> NO_INPUT_DETECTED") return;
+    
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        const originalText = btn.innerText;
+        btn.innerText = "COPIED!";
+        btn.style.borderColor = "#00ff41";
+        btn.style.color = "#00ff41";
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.borderColor = "#008cff";
+            btn.style.color = "#008cff";
+        }, 1500);
+    }).catch(err => {
+        console.error('Error: ', err);
+    });
+}
+</script>
+</body>
+</html>
